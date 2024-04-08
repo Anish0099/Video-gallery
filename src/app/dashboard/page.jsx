@@ -86,7 +86,7 @@ const DashboardPage = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         {videos.map((video) => (
-                            <section className="p-2">
+                            <section key={video.url} className="p-2">
                                 <Suspense fallback={<p>Loading video...</p>}>
                                     <VideoComponent src={video.url} />
                                 </Suspense>
