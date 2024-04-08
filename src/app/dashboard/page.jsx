@@ -1,20 +1,53 @@
-
+"use client"
 import { Button } from "@/components/ui/button";
+import { InputFile } from "@/components/InputFile";
 import { Separator } from "@/components/ui/separator";
 
 import { UserButton, auth } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 
 import { ArrowLeft } from "lucide-react";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense, useEffect } from "react";
+import { useState } from "react";
+import VideoComponent from "@/components/ui/video-component";
 
 
 
-const DashboardPage = async () => {
-    const { userId } = auth();
-    console.log(userId)
+const DashboardPage = () => {
+    const [videos, setVideos] = useState([]);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            const response = await fetch('/api/getvideos');
+            const data = await response.json();
+            setVideos(data);
+        };
+
+        fetchVideos();
+    }, []);
+
+
+
+    function handleFileChange(ev) {
+        const file = ev.target.files?.[0];
+        console.log(file)
+        if (file) {
+            const data = new FormData;
+            data.set('file', file);
+            fetch('/api/video', {
+                method: 'POST',
+                body: data,
+            }).then(res => {
+                res.json().then(link => {
+                    console.log(link);
+                })
+            })
+
+        }
+    }
 
 
     return (
@@ -41,13 +74,25 @@ const DashboardPage = async () => {
                     <Separator />
                     <div className="h-8"></div>
                     <div className="flex gap-3">
-                        <Link href={"/video-call"}>
-                            <Button>
-                                Start Video
+                        <form>
+                            <input type="file" onChange={handleFileChange} />
+                            <Button >
+                                Add
                             </Button>
-                        </Link>
+                        </form>
+                        <div className="h-8"></div>
 
-                        <div></div>
+
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+                        {videos.map((video) => (
+                            <section className="p-2">
+                                <Suspense fallback={<p>Loading video...</p>}>
+                                    <VideoComponent src={video.url} />
+                                </Suspense>
+                                {/* Other content of the page */}
+                            </section>
+                        ))}
                     </div>
 
                 </div>
