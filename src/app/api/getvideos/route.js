@@ -8,7 +8,7 @@ export async function GET() {
         await connectDB();
 
         // Fetch videos with a timeout
-        const videos = await Video.find().timeout(30000); // Timeout after 30 seconds
+        const videos = await Video.find() // Timeout after 30 seconds
 
         return Response.json(videos);
     } catch (error) {
