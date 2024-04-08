@@ -38,7 +38,7 @@ export async function POST(req) {
         const link = `https://${bucketName}.s3.amazonaws.com/${newFilename}`;
         console.log(link)
 
-        connectDB();
+        await connectDB();
 
         const newVideo = new Video({
             url: link
