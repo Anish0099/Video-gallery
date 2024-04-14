@@ -45,12 +45,9 @@ const DashboardPage = () => {
         fetchVideos();
     }, []);
 
-    const handleOpen = () => setIsOpen(true);
-    const handleClose = () => setIsOpen(false);
 
-    const handleTitle = (e) => {
-        setTitle(e.target.value)
-    }
+
+
 
     async function handlesubmit(formData) {
 
@@ -89,18 +86,10 @@ const DashboardPage = () => {
                     <div className="h-8"></div>
                     <div className="flex gap-4">
                         <div className="w-full flex gap-2 p-3">
-                            {/* <label>
-                                <input className="hidden" name="file" type="file" id="file" />
-                                <span>Upload File</span>
-                            </label>
-                            <label></label>
-                            <input className="w-full" type="text" name="title" id="title" value={title} onChange={handleTitle} />
-                            <Button type="submit" >
-                                Add
-                            </Button> */}
+
                             <Dialog >
                                 <DialogTrigger asChild>
-                                    <Button onClick={handleOpen} variant="outline">Upload</Button>
+                                    <Button variant="outline">Upload</Button>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
