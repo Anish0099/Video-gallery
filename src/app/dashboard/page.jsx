@@ -30,8 +30,8 @@ import { DialogDemo } from "@/components/UploadFiles";
 
 const DashboardPage = () => {
     const [videos, setVideos] = useState([]);
-    const [title, setTitle] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
+    c
+
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -115,7 +115,7 @@ const DashboardPage = () => {
                                                 <Label htmlFor="name" className="text-right">
                                                     Title
                                                 </Label>
-                                                <Input onChange={handleTitle} type="text" id="title"
+                                                <Input type="text" id="title"
                                                     name="title" className="col-span-3" />
                                             </div>
                                             <div className="grid grid-cols-4 items-center gap-4">
@@ -140,7 +140,7 @@ const DashboardPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         {videos.map((video) => (
                             /* eslint-disable react/jsx-key */
-                            <section key={video.url} className="p-2">
+                            <section key={video.id} className="p-2">
                                 <Suspense fallback={<p>Loading video...</p>}>
 
                                     <VideoComponent src={video.url} title={video.title} />
