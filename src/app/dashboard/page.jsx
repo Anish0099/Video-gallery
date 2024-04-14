@@ -24,13 +24,13 @@ import Link from "next/link";
 import React, { Suspense, useEffect } from "react";
 import { useState } from "react";
 import VideoComponent from "@/components/ui/video-component";
-import { DialogDemo } from "@/components/UploadFiles";
+
 
 
 
 const DashboardPage = () => {
     const [videos, setVideos] = useState([]);
-    c
+
 
 
     useEffect(() => {
