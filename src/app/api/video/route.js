@@ -2,13 +2,17 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import uniqid from "uniqid";
 import { Video } from "@/lib/modals/Video";
 import connectDB from "@/lib/db";
+import { auth } from "@clerk/nextjs";
 
 export async function POST(req) {
+    await connectDB();
+    const { userId } = auth();
     const formData = await req.formData();
-
+    const file = formData.get('file');
+    const title = formData.get('title');
     if (formData.has('file')) {
-        const file = formData.get('file');
-
+        console.log(file);
+        console.log(title);
         const s3Client = new S3Client({
             region: 'eu-north-1',
             credentials: {
@@ -19,6 +23,7 @@ export async function POST(req) {
 
         const randomId = uniqid();
         const ext = file.name.split('.').pop();
+        console.log(ext);
         const newFilename = randomId + '.' + ext;
         const bucketName = process.env.BUCKET_NAME;
 
@@ -38,19 +43,23 @@ export async function POST(req) {
         const link = `https://${bucketName}.s3.amazonaws.com/${newFilename}`;
         console.log(link)
 
-        await connectDB();
 
-        const newVideo = new Video({
+
+
+        const newVideo = await new Video({
+            userId: userId,
+            title,
             url: link
         });
 
         await newVideo.save();
 
         console.log('Video saved to database:', link);
+        console.log(newVideo)
 
-        return Response.json(link);
-
-
+        return Response.json(newVideo);
     }
+
 }
+
 
